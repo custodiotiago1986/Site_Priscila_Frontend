@@ -1,0 +1,16 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.profile-img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.container {
+    margin-top: 20px;
+}
