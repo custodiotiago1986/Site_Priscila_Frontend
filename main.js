@@ -15,15 +15,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const username = localStorage.getItem('username');
         if (username) {
             loginButton.style.display = 'none';
+            usernameInput.style.display = 'none';
+            passwordInput.style.display = 'none';
             logoutButton.style.display = 'inline-block';
             welcomeMessage.style.display = 'inline';
             welcomeUsername.textContent = username;
             postForm.style.display = 'block'; // Mostrar o formulário de postagem
         } else {
-            loginButton.style.display = 'inline-block';
+            loginButton.style.display = 'inline-block';    
+            usernameInput.style.display = 'inline-block';
+            passwordInput.style.display = 'inline-block';        
             logoutButton.style.display = 'none';
             welcomeMessage.style.display = 'none';
-            postForm.style.display = 'none'; // Ocultar o formulário de postagem
+            postForm.style.display = 'none'; // Ocultar o formulário de postagem            
         }
     }
 
