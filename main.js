@@ -1,29 +1,81 @@
 document.addEventListener('DOMContentLoaded', function() {
     const loginButton = document.getElementById('loginButton');
     const logoutButton = document.getElementById('logoutButton');
-    const greeting = document.getElementById('greeting');
-    
-    // Verifica se o usuário está autenticado
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const postAulaForm = document.getElementById('postAulaForm');
+    const postScriptForm = document.getElementById('postScriptForm');
+    const postsTable = document.getElementById('postsTable');
+    const postForm = document.getElementById('postForm');
+    const endpoint = document.getElementById('postAulaForm') ? '/aulas' : '/scripts';
+
     function checkLoginStatus() {
         const username = localStorage.getItem('username');
         if (username) {
-            greeting.textContent = `Olá, ${username}`;
             loginButton.style.display = 'none';
-            logoutButton.style.display = 'block';
+            logoutButton.style.display = 'inline-block';
+            postForm.style.display = 'block';
+            loadPosts();
         } else {
-            greeting.textContent = '';
-            loginButton.style.display = 'block';
+            loginButton.style.display = 'inline-block';
             logoutButton.style.display = 'none';
+            postForm.style.display = 'none';
         }
     }
 
-    // Função para o login
-    loginButton.addEventListener('click', function() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+    function loadPosts() {
+        fetch(endpoint)
+            .then(response => response.json())
+            .then(data => {
+                postsTable.innerHTML = `
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Conteúdo</th>
+                                <th>Autor</th>
+                                <th>Data</th>
+                                <th>Hora</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.map(post => `
+                                <tr>
+                                    <td>${post.titulo}</td>
+                                    <td>${post.conteudo}</td>
+                                    <td>${post.autor}</td>
+                                    <td>${post.data}</td>
+                                    <td>${post.hora}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            })
+            .catch(error => console.error('Erro ao carregar postagens:', error));
+    }
 
+    function postData(url, data) {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(() => {
+            loadPosts();
+        })
+        .catch(error => console.error('Erro ao postar dados:', error));
+    }
+
+    loginButton.addEventListener('click', function() {
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+
+        // Simulação de autenticação (substituir por autenticação real)
         if (username && password) {
-            // Aqui você pode adicionar lógica de autenticação com backend
             localStorage.setItem('username', username);
             checkLoginStatus();
         } else {
@@ -31,12 +83,50 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Função para o logout
     logoutButton.addEventListener('click', function() {
         localStorage.removeItem('username');
         checkLoginStatus();
     });
 
-    // Verifica o status do login ao carregar a página
+    if (postAulaForm) {
+        document.getElementById('postButton').addEventListener('click', function() {
+            const titulo = document.getElementById('titulo').value;
+            const conteudo = document.getElementById('conteudo').value;
+            const username = localStorage.getItem('username');
+
+            if (titulo && conteudo) {
+                postData('/aulas', {
+                    titulo: titulo,
+                    conteudo: conteudo,
+                    autor: username,
+                    data: new Date().toLocaleDateString(),
+                    hora: new Date().toLocaleTimeString()
+                });
+            } else {
+                alert('Por favor, preencha todos os campos.');
+            }
+        });
+    }
+
+    if (postScriptForm) {
+        document.getElementById('postButton').addEventListener('click', function() {
+            const titulo = document.getElementById('titulo').value;
+            const conteudo = document.getElementById('conteudo').value;
+            const username = localStorage.getItem('username');
+
+            if (titulo && conteudo) {
+                postData('/scripts', {
+                    titulo: titulo,
+                    conteudo: conteudo,
+                    autor: username,
+                    data: new Date().toLocaleDateString(),
+                    hora: new Date().toLocaleTimeString()
+                });
+            } else {
+                alert('Por favor, preencha todos os campos.');
+            }
+        });
+    }
+
     checkLoginStatus();
 });
