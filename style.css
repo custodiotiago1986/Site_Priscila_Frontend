@@ -1,6 +1,11 @@
 body {
     padding-top: 70px; /* Ajusta o espaço para o navbar fixo */
     font-family: Arial, sans-serif; /* Define uma fonte padrão */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Garante que o body tenha pelo menos a altura da viewport */
+    display: flex;
+    flex-direction: column;
 }
 
 .navbar {
@@ -11,6 +16,11 @@ body {
     z-index: 1030;
     background-color: #ffffff; /* Cor de fundo da navbar */
     border-bottom: 1px solid #ddd; /* Adiciona uma borda sutil */
+    padding: 0.5rem 1rem; /* Adiciona algum padding para a navbar */
+}
+
+.container {
+    margin-top: 20px; /* Adiciona margem superior ao conteúdo */
 }
 
 .profile-img {
@@ -51,14 +61,11 @@ body {
 }
 
 .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
     background-color: #f8f9fa;
     padding: 10px 0;
     text-align: center; /* Alinha o texto ao centro */
     border-top: 1px solid #ddd; /* Borda superior */
+    margin-top: auto; /* Empurra o footer para o final do conteúdo */
 }
 
 #scrollToTop {
