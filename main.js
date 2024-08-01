@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const welcomeMessage = document.getElementById('welcomeMessage');
     const welcomeUsername = document.getElementById('welcomeUsername');
     const baseUrl = 'http://localhost:3000'; // URL do backend
-    const endpoint = postAulaForm ? `${baseUrl}/aulas` : (postScriptForm ? `${baseUrl}/scripts` : null);
 
     function checkLoginStatus() {
         const username = localStorage.getItem('username');
@@ -19,17 +18,17 @@ document.addEventListener('DOMContentLoaded', function() {
             logoutButton.style.display = 'inline-block';
             welcomeMessage.style.display = 'inline';
             welcomeUsername.textContent = username;
-            postForm.style.display = 'block';
-            loadPosts();
+            postForm.style.display = 'block'; // Mostrar o formulário de postagem
         } else {
             loginButton.style.display = 'inline-block';
             logoutButton.style.display = 'none';
             welcomeMessage.style.display = 'none';
-            postForm.style.display = 'none';
+            postForm.style.display = 'none'; // Ocultar o formulário de postagem
         }
     }
 
     function loadPosts() {
+        const endpoint = postAulaForm ? `${baseUrl}/aulas` : (postScriptForm ? `${baseUrl}/scripts` : null);
         if (!endpoint) return;
 
         fetch(endpoint)
@@ -58,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <td>${post.descricao}</td>
                                     <td>${post.autor}</td>
                                     <td>${new Date(post.data).toLocaleDateString()}</td>
-                                    <td>${new Date(post.data).toLocaleTimeString()}</td>
+                                    <td>${new Date(post.hora).toLocaleTimeString()}</td>
                                 </tr>
                             `).join('')}
                         </tbody>
@@ -153,5 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Carregar posts ao carregar a página
+    loadPosts();
     checkLoginStatus();
 });
