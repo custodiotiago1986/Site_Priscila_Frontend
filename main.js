@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function checkLoginStatus() {
         const username = localStorage.getItem('username');
+        console.log('Verificando status de login. Usuário atual:', username);
         if (username) {
             loginButton.style.display = 'none';
             logoutButton.style.display = 'inline-block';
@@ -29,9 +30,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function loadPosts() {
+        console.log('Carregando postagens de', endpoint);
         fetch(endpoint)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na resposta da rede: ' + response.statusText);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Postagens carregadas:', data);
                 postsTable.innerHTML = `
                     <table class="table table-striped">
                         <thead>
@@ -61,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function postData(url, data) {
+        console.log('Enviando dados para', url, 'com o conteúdo:', data);
         fetch(url, {
             method: 'POST',
             headers: {
@@ -68,8 +77,14 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify(data)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro na resposta da rede: ' + response.statusText);
+            }
+            return response.json();
+        })
         .then(() => {
+            console.log('Dados postados com sucesso.');
             loadPosts();
         })
         .catch(error => console.error('Erro ao postar dados:', error));
@@ -78,17 +93,20 @@ document.addEventListener('DOMContentLoaded', function() {
     loginButton.addEventListener('click', function() {
         const username = usernameInput.value;
         const password = passwordInput.value;
+        console.log('Tentando fazer login com usuário:', username);
 
         // Simulação de autenticação (substituir por autenticação real)
         if (username && password) {
             localStorage.setItem('username', username);
             checkLoginStatus();
         } else {
+            console.error('Por favor, preencha todos os campos.');
             alert('Por favor, preencha todos os campos.');
         }
     });
 
     logoutButton.addEventListener('click', function() {
+        console.log('Realizando logout.');
         localStorage.removeItem('username');
         checkLoginStatus();
     });
@@ -98,6 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const titulo = document.getElementById('titulo').value;
             const conteudo = document.getElementById('conteudo').value;
             const username = localStorage.getItem('username');
+            console.log('Tentando postar aula com título:', titulo);
 
             if (titulo && conteudo) {
                 postData('/aulas', {
@@ -108,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     hora: new Date().toLocaleTimeString()
                 });
             } else {
+                console.error('Por favor, preencha todos os campos.');
                 alert('Por favor, preencha todos os campos.');
             }
         });
@@ -118,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const titulo = document.getElementById('titulo').value;
             const conteudo = document.getElementById('conteudo').value;
             const username = localStorage.getItem('username');
+            console.log('Tentando postar script com título:', titulo);
 
             if (titulo && conteudo) {
                 postData('/scripts', {
@@ -128,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     hora: new Date().toLocaleTimeString()
                 });
             } else {
+                console.error('Por favor, preencha todos os campos.');
                 alert('Por favor, preencha todos os campos.');
             }
         });
