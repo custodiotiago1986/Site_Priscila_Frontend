@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const loginButton = document.getElementById('loginButton');
     const greeting = document.getElementById('greeting');
-    const loginForm = document.getElementById('loginForm');
     
     // Verifica se o usuário está autenticado
     function checkLoginStatus() {
@@ -14,8 +13,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função para fazer login
     async function loginUser(username, password) {
         try {
+            console.log('Tentando fazer login...'); // Adicionando log para depuração
             const response = await fetch('http://localhost:3000/users'); // Altere para o URL do seu backend
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
             const users = await response.json();
+            
+            console.log('Usuários recebidos do backend:', users); // Adicionando log para depuração
 
             const user = users.find(user => user.username === username && user.password === password);
 
