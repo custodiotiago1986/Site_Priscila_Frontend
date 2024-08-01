@@ -89,3 +89,7 @@ body {
 #scrollToTop:hover {
     background-color: #0056b3; /* Cor de fundo ao passar o mouse */
 }
+
+#welcomeMessage{
+    margin-right: 20px;
+}
