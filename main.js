@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const loginButton = document.getElementById('loginButton');
+    const logoutButton = document.getElementById('logoutButton');
     const greeting = document.getElementById('greeting');
     
     // Verifica se o usuário está autenticado
@@ -7,47 +8,35 @@ document.addEventListener('DOMContentLoaded', function() {
         const username = localStorage.getItem('username');
         if (username) {
             greeting.textContent = `Olá, ${username}`;
+            loginButton.style.display = 'none';
+            logoutButton.style.display = 'block';
+        } else {
+            greeting.textContent = '';
+            loginButton.style.display = 'block';
+            logoutButton.style.display = 'none';
         }
     }
 
-    // Função para fazer login
-    async function loginUser(username, password) {
-        try {
-            console.log('Tentando fazer login...'); // Adicionando log para depuração
-            const response = await fetch('http://localhost:3000/users'); // Altere para o URL do seu backend
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const users = await response.json();
-            
-            console.log('Usuários recebidos do backend:', users); // Adicionando log para depuração
-
-            const user = users.find(user => user.username === username && user.password === password);
-
-            if (user) {
-                localStorage.setItem('username', username);
-                greeting.textContent = `Olá, ${username}`;
-                alert('Login bem-sucedido');
-            } else {
-                alert('Credenciais inválidas');
-            }
-        } catch (error) {
-            console.error('Erro ao verificar as credenciais:', error);
-        }
-    }
-
-    // Adiciona o evento de clique ao botão de login
+    // Função para o login
     loginButton.addEventListener('click', function() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-        
+
         if (username && password) {
-            loginUser(username, password);
+            // Aqui você pode adicionar lógica de autenticação com backend
+            localStorage.setItem('username', username);
+            checkLoginStatus();
         } else {
             alert('Por favor, preencha todos os campos.');
         }
     });
 
-    // Verifica o status de login ao carregar a página
+    // Função para o logout
+    logoutButton.addEventListener('click', function() {
+        localStorage.removeItem('username');
+        checkLoginStatus();
+    });
+
+    // Verifica o status do login ao carregar a página
     checkLoginStatus();
 });

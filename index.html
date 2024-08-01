@@ -18,12 +18,15 @@
                     <a href="contato.html" class="btn btn-outline-primary mx-2">Contato</a>
                 </div>
             </div>
-            <form id="loginForm" class="form-inline">
-                <input id="username" class="form-control mr-sm-2" type="text" placeholder="Usuário">
-                <input id="password" class="form-control mr-sm-2" type="password" placeholder="Senha">
-                <button id="loginButton" class="btn btn-outline-success my-2 my-sm-0" type="button">Login</button>
-            </form>
-            <span id="greeting" class="ml-3"></span>
+            <div class="d-flex align-items-center">
+                <span id="greeting" class="mr-3"></span>
+                <form id="loginForm" class="form-inline">
+                    <input id="username" class="form-control mr-sm-2" type="text" placeholder="Usuário">
+                    <input id="password" class="form-control mr-sm-2" type="password" placeholder="Senha">
+                    <button id="loginButton" class="btn btn-outline-success my-2 my-sm-0" type="button">Login</button>
+                    <button id="logoutButton" class="btn btn-outline-danger my-2 my-sm-0 ml-2" type="button" style="display: none;">Logout</button>
+                </form>
+            </div>
         </div>
     </nav>   
 
