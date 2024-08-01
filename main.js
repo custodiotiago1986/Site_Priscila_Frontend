@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const postScriptForm = document.getElementById('postScriptForm');
     const postsTable = document.getElementById('postsTable');
     const postForm = document.getElementById('postForm');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    const welcomeUsername = document.getElementById('welcomeUsername');
     const endpoint = document.getElementById('postAulaForm') ? '/aulas' : '/scripts';
 
     function checkLoginStatus() {
@@ -14,11 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (username) {
             loginButton.style.display = 'none';
             logoutButton.style.display = 'inline-block';
+            welcomeMessage.style.display = 'inline';
+            welcomeUsername.textContent = username;
             postForm.style.display = 'block';
             loadPosts();
         } else {
             loginButton.style.display = 'inline-block';
             logoutButton.style.display = 'none';
+            welcomeMessage.style.display = 'none';
             postForm.style.display = 'none';
         }
     }
