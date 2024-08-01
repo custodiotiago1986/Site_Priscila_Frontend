@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <thead>
                             <tr>
                                 <th>Título</th>
-                                <th>Conteúdo</th>
+                                <th>Descrição</th>
                                 <th>Autor</th>
                                 <th>Data</th>
                                 <th>Hora</th>
@@ -56,10 +56,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             ${data.map(post => `
                                 <tr>
                                     <td>${post.titulo}</td>
-                                    <td>${post.conteudo}</td>
+                                    <td>${post.descricao}</td>
                                     <td>${post.autor}</td>
-                                    <td>${post.data}</td>
-                                    <td>${post.hora}</td>
+                                    <td>${new Date(post.data).toLocaleDateString()}</td>
+                                    <td>${new Date(post.data).toLocaleTimeString()}</td>
                                 </tr>
                             `).join('')}
                         </tbody>
@@ -115,17 +115,17 @@ document.addEventListener('DOMContentLoaded', function() {
     if (postAulaForm) {
         document.getElementById('postButton').addEventListener('click', function() {
             const titulo = document.getElementById('titulo').value;
-            const conteudo = document.getElementById('conteudo').value;
+            const descricao = document.getElementById('descricao').value;
             const username = localStorage.getItem('username');
             console.log('Tentando postar aula com título:', titulo);
 
-            if (titulo && conteudo) {
+            if (titulo && descricao) {
                 postData(`${baseUrl}/aulas`, {
                     titulo: titulo,
-                    conteudo: conteudo,
+                    descricao: descricao,
                     autor: username,
-                    data: new Date().toLocaleDateString(),
-                    hora: new Date().toLocaleTimeString()
+                    data: new Date().toISOString(), // Data no formato ISO
+                    hora: new Date().toLocaleTimeString() // Hora no formato de string
                 });
             } else {
                 console.error('Por favor, preencha todos os campos.');
@@ -137,17 +137,17 @@ document.addEventListener('DOMContentLoaded', function() {
     if (postScriptForm) {
         document.getElementById('postButton').addEventListener('click', function() {
             const titulo = document.getElementById('titulo').value;
-            const conteudo = document.getElementById('conteudo').value;
+            const descricao = document.getElementById('descricao').value;
             const username = localStorage.getItem('username');
             console.log('Tentando postar script com título:', titulo);
 
-            if (titulo && conteudo) {
+            if (titulo && descricao) {
                 postData(`${baseUrl}/scripts`, {
                     titulo: titulo,
-                    conteudo: conteudo,
+                    descricao: descricao,
                     autor: username,
-                    data: new Date().toLocaleDateString(),
-                    hora: new Date().toLocaleTimeString()
+                    data: new Date().toISOString(), // Data no formato ISO
+                    hora: new Date().toLocaleTimeString() // Hora no formato de string
                 });
             } else {
                 console.error('Por favor, preencha todos os campos.');
