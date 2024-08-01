@@ -1,20 +1,42 @@
 body {
-    font-family: Arial, sans-serif;
+    padding-top: 70px; /* Ajusta o espaço para o navbar fixo */
 }
 
 .navbar {
-    margin-bottom: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
 }
 
 .profile-img {
-    max-width: 100%;
-    border-radius: 10px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-.container {
+.text-introduction {
+    font-size: 1.25rem;
+}
+
+.posts-list {
     margin-top: 20px;
 }
 
-#welcomeMessage{
-    margin-right: 20px;
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #f8f9fa;
+    padding: 10px 0;
+}
+
+#scrollToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
 }

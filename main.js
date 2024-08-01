@@ -156,6 +156,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Função para mostrar/ocultar o botão "scroll to top"
+    window.addEventListener('scroll', function() {
+        const scrollToTopButton = document.getElementById('scrollToTop');
+        if (window.scrollY > 100) {
+            scrollToTopButton.style.display = 'block';
+        } else {
+            scrollToTopButton.style.display = 'none';
+        }
+    });
+
+    // Função para rolar para o topo da página
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Adiciona o evento de clique no botão "scroll to top"
+    const scrollToTopButton = document.getElementById('scrollToTop');
+    if (scrollToTopButton) {
+        scrollToTopButton.addEventListener('click', scrollToTop);
+    }
+
     // Carregar posts ao carregar a página
     loadPosts();
     checkLoginStatus();

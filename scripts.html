@@ -32,7 +32,6 @@
         <h1>Scripts de R</h1>
         <p>Aqui você encontrará postagens sobre scripts de R e outros conteúdos relacionados.</p>
         
-        <!-- Formulário de postagem -->
         <div id="postForm" class="mb-4" style="display: none;">
             <h3>Novo Script</h3>
             <form id="postScriptForm">
@@ -48,12 +47,19 @@
             </form>
         </div>
 
-        <!-- Tabela de postagens -->
         <h3>Postagens</h3>
-        <div id="postsTable">
+        <div id="postsTable" class="posts-list">
             <!-- A tabela será preenchida pelo JavaScript -->
         </div>
     </div>
+
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2024 Tiago Luis Custódio. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <button id="scrollToTop" class="btn btn-primary" onclick="scrollToTop()">Topo</button>
 
     <script src="main.js"></script>
 </body>
