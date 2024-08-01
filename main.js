@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const welcomeMessage = document.getElementById('welcomeMessage');
     const welcomeUsername = document.getElementById('welcomeUsername');
     const baseUrl = 'http://localhost:3000'; // URL do backend
-    const endpoint = postAulaForm ? `${baseUrl}/aulas` : `${baseUrl}/scripts`;
+    const endpoint = postAulaForm ? `${baseUrl}/aulas` : (postScriptForm ? `${baseUrl}/scripts` : null);
 
     function checkLoginStatus() {
         const username = localStorage.getItem('username');
@@ -31,6 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function loadPosts() {
+        if (!endpoint) return; // Exit if endpoint is not set
+
         console.log('Carregando postagens de', endpoint);
         fetch(endpoint)
             .then(response => {
@@ -91,69 +93,77 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Erro ao postar dados:', error));
     }
 
-    loginButton.addEventListener('click', function() {
-        const username = usernameInput.value;
-        const password = passwordInput.value;
-        console.log('Tentando fazer login com usuário:', username);
+    if (loginButton && logoutButton) {
+        loginButton.addEventListener('click', function() {
+            const username = usernameInput ? usernameInput.value : '';
+            const password = passwordInput ? passwordInput.value : '';
+            console.log('Tentando fazer login com usuário:', username);
 
-        // Simulação de autenticação (substituir por autenticação real)
-        if (username && password) {
-            localStorage.setItem('username', username);
-            checkLoginStatus();
-        } else {
-            console.error('Por favor, preencha todos os campos.');
-            alert('Por favor, preencha todos os campos.');
-        }
-    });
-
-    logoutButton.addEventListener('click', function() {
-        console.log('Realizando logout.');
-        localStorage.removeItem('username');
-        checkLoginStatus();
-    });
-
-    if (postAulaForm) {
-        document.getElementById('postButton').addEventListener('click', function() {
-            const titulo = document.getElementById('titulo').value;
-            const descricao = document.getElementById('descricao').value;
-            const username = localStorage.getItem('username');
-            console.log('Tentando postar aula com título:', titulo);
-
-            if (titulo && descricao) {
-                postData(`${baseUrl}/aulas`, {
-                    titulo: titulo,
-                    descricao: descricao,
-                    autor: username,
-                    data: new Date().toISOString(), // Data no formato ISO
-                    hora: new Date().toLocaleTimeString() // Hora no formato de string
-                });
+            // Simulação de autenticação (substituir por autenticação real)
+            if (username && password) {
+                localStorage.setItem('username', username);
+                checkLoginStatus();
             } else {
                 console.error('Por favor, preencha todos os campos.');
                 alert('Por favor, preencha todos os campos.');
             }
+        });
+
+        logoutButton.addEventListener('click', function() {
+            console.log('Realizando logout.');
+            localStorage.removeItem('username');
+            checkLoginStatus();
         });
     }
 
-    if (postScriptForm) {
-        document.getElementById('postButton').addEventListener('click', function() {
-            const titulo = document.getElementById('titulo').value;
-            const descricao = document.getElementById('descricao').value;
-            const username = localStorage.getItem('username');
-            console.log('Tentando postar script com título:', titulo);
+    if (postAulaForm) {
+        const postButton = document.getElementById('postButton');
+        if (postButton) {
+            postButton.addEventListener('click', function() {
+                const titulo = document.getElementById('titulo') ? document.getElementById('titulo').value : '';
+                const descricao = document.getElementById('descricao') ? document.getElementById('descricao').value : '';
+                const username = localStorage.getItem('username');
+                console.log('Tentando postar aula com título:', titulo);
 
-            if (titulo && descricao) {
-                postData(`${baseUrl}/scripts`, {
-                    titulo: titulo,
-                    descricao: descricao,
-                    autor: username,
-                    data: new Date().toISOString(), // Data no formato ISO
-                    hora: new Date().toLocaleTimeString() // Hora no formato de string
-                });
-            } else {
-                console.error('Por favor, preencha todos os campos.');
-                alert('Por favor, preencha todos os campos.');
-            }
-        });
+                if (titulo && descricao) {
+                    postData(`${baseUrl}/aulas`, {
+                        titulo: titulo,
+                        descricao: descricao,
+                        autor: username,
+                        data: new Date().toISOString(), // Data no formato ISO
+                        hora: new Date().toLocaleTimeString() // Hora no formato de string
+                    });
+                } else {
+                    console.error('Por favor, preencha todos os campos obrigatórios.');
+                    alert('Por favor, preencha todos os campos obrigatórios.');
+                }
+            });
+        }
+    }
+
+    if (postScriptForm) {
+        const postButton = document.getElementById('postButton');
+        if (postButton) {
+            postButton.addEventListener('click', function() {
+                const titulo = document.getElementById('titulo') ? document.getElementById('titulo').value : '';
+                const descricao = document.getElementById('descricao') ? document.getElementById('descricao').value : '';
+                const username = localStorage.getItem('username');
+                console.log('Tentando postar script com título:', titulo);
+
+                if (titulo && descricao) {
+                    postData(`${baseUrl}/scripts`, {
+                        titulo: titulo,
+                        descricao: descricao,
+                        autor: username,
+                        data: new Date().toISOString(), // Data no formato ISO
+                        hora: new Date().toLocaleTimeString() // Hora no formato de string
+                    });
+                } else {
+                    console.error('Por favor, preencha todos os campos obrigatórios.');
+                    alert('Por favor, preencha todos os campos obrigatórios.');
+                }
+            });
+        }
     }
 
     checkLoginStatus();
