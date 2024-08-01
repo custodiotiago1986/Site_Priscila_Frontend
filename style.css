@@ -14,3 +14,7 @@ body {
 .container {
     margin-top: 20px;
 }
+
+#welcomeMessage{
+    margin-right: 20px;
+}
