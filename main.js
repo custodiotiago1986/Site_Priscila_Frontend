@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function checkLoginStatus() {
         const username = localStorage.getItem('username');
-        console.log('Verificando status de login. Usuário atual:', username);
         if (username) {
             loginButton.style.display = 'none';
             logoutButton.style.display = 'inline-block';
@@ -31,9 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function loadPosts() {
-        if (!endpoint) return; // Exit if endpoint is not set
+        if (!endpoint) return;
 
-        console.log('Carregando postagens de', endpoint);
         fetch(endpoint)
             .then(response => {
                 if (!response.ok) {
@@ -42,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                console.log('Postagens carregadas:', data);
                 postsTable.innerHTML = `
                     <table class="table table-striped">
                         <thead>
@@ -72,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function postData(url, data) {
-        console.log('Enviando dados para', url, 'com o conteúdo:', data);
         fetch(url, {
             method: 'POST',
             headers: {
@@ -87,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(() => {
-            console.log('Dados postados com sucesso.');
             loadPosts();
         })
         .catch(error => console.error('Erro ao postar dados:', error));
@@ -95,22 +90,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (loginButton && logoutButton) {
         loginButton.addEventListener('click', function() {
-            const username = usernameInput ? usernameInput.value : '';
-            const password = passwordInput ? passwordInput.value : '';
-            console.log('Tentando fazer login com usuário:', username);
+            const username = usernameInput.value;
+            const password = passwordInput.value;
 
-            // Simulação de autenticação (substituir por autenticação real)
             if (username && password) {
                 localStorage.setItem('username', username);
                 checkLoginStatus();
             } else {
-                console.error('Por favor, preencha todos os campos.');
                 alert('Por favor, preencha todos os campos.');
             }
         });
 
         logoutButton.addEventListener('click', function() {
-            console.log('Realizando logout.');
             localStorage.removeItem('username');
             checkLoginStatus();
         });
@@ -120,21 +111,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const postButton = document.getElementById('postButton');
         if (postButton) {
             postButton.addEventListener('click', function() {
-                const titulo = document.getElementById('titulo') ? document.getElementById('titulo').value : '';
-                const descricao = document.getElementById('descricao') ? document.getElementById('descricao').value : '';
+                const titulo = document.getElementById('titulo').value;
+                const descricao = document.getElementById('conteudo').value;
                 const username = localStorage.getItem('username');
-                console.log('Tentando postar aula com título:', titulo);
 
                 if (titulo && descricao) {
                     postData(`${baseUrl}/aulas`, {
                         titulo: titulo,
                         descricao: descricao,
                         autor: username,
-                        data: new Date().toISOString(), // Data no formato ISO
+                        data: new Date().toISOString().split('T')[0], // Data no formato YYYY-MM-DD
                         hora: new Date().toLocaleTimeString() // Hora no formato de string
                     });
                 } else {
-                    console.error('Por favor, preencha todos os campos obrigatórios.');
                     alert('Por favor, preencha todos os campos obrigatórios.');
                 }
             });
@@ -145,21 +134,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const postButton = document.getElementById('postButton');
         if (postButton) {
             postButton.addEventListener('click', function() {
-                const titulo = document.getElementById('titulo') ? document.getElementById('titulo').value : '';
-                const descricao = document.getElementById('descricao') ? document.getElementById('descricao').value : '';
+                const titulo = document.getElementById('titulo').value;
+                const descricao = document.getElementById('conteudo').value;
                 const username = localStorage.getItem('username');
-                console.log('Tentando postar script com título:', titulo);
 
                 if (titulo && descricao) {
                     postData(`${baseUrl}/scripts`, {
                         titulo: titulo,
                         descricao: descricao,
                         autor: username,
-                        data: new Date().toISOString(), // Data no formato ISO
+                        data: new Date().toISOString().split('T')[0], // Data no formato YYYY-MM-DD
                         hora: new Date().toLocaleTimeString() // Hora no formato de string
                     });
                 } else {
-                    console.error('Por favor, preencha todos os campos obrigatórios.');
                     alert('Por favor, preencha todos os campos obrigatórios.');
                 }
             });
