@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordInput = document.getElementById('password');
     const postAulaForm = document.getElementById('postAulaForm');
     const postScriptForm = document.getElementById('postScriptForm');
-    const postsTable = document.getElementById('postsTable');
+    const postsContainer = document.getElementById('postsContainer');
     const postForm = document.getElementById('postForm');
     const welcomeMessage = document.getElementById('welcomeMessage');
     const welcomeUsername = document.getElementById('welcomeUsername');
@@ -43,30 +43,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                postsTable.innerHTML = `
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Título</th>
-                                <th>Descrição</th>
-                                <th>Autor</th>
-                                <th>Data</th>
-                                <th>Hora</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${data.map(post => `
-                                <tr>
-                                    <td>${post.titulo}</td>
-                                    <td>${post.descricao}</td>
-                                    <td>${post.autor}</td>
-                                    <td>${new Date(post.data).toLocaleDateString()}</td>
-                                    <td>${new Date(post.hora).toLocaleTimeString()}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
+                postsContainer.innerHTML = data.map(post => `
+                    <div class="post mb-3">
+                        <h4>${post.titulo}</h4>
+                        <p>${post.descricao}</p>
+                        <p><small>Postado por ${post.autor}, ${new Date(post.data).toLocaleDateString()} às ${new Date(post.hora).toLocaleTimeString()}</small></p>
+                    </div>
+                `).join('');
             })
             .catch(error => console.error('Erro ao carregar postagens:', error));
     }
