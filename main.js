@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const postForm = document.getElementById('postForm');
     const welcomeMessage = document.getElementById('welcomeMessage');
     const welcomeUsername = document.getElementById('welcomeUsername');
-    const endpoint = document.getElementById('postAulaForm') ? '/aulas' : '/scripts';
+    const baseUrl = 'http://localhost:3000'; // URL do backend
+    const endpoint = postAulaForm ? `${baseUrl}/aulas` : `${baseUrl}/scripts`;
 
     function checkLoginStatus() {
         const username = localStorage.getItem('username');
@@ -119,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Tentando postar aula com título:', titulo);
 
             if (titulo && conteudo) {
-                postData('/aulas', {
+                postData(`${baseUrl}/aulas`, {
                     titulo: titulo,
                     conteudo: conteudo,
                     autor: username,
@@ -141,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Tentando postar script com título:', titulo);
 
             if (titulo && conteudo) {
-                postData('/scripts', {
+                postData(`${baseUrl}/scripts`, {
                     titulo: titulo,
                     conteudo: conteudo,
                     autor: username,
