@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const postForm = document.getElementById('postForm');
     const welcomeMessage = document.getElementById('welcomeMessage');
     const welcomeUsername = document.getElementById('welcomeUsername');
-    const baseUrl = 'sitepriscilabackend-bcengybre2gmashv.eastus-01.azurewebsites.net'; // URL do backend
+    const baseUrl = 'https://sitepriscilabackend-bcengybre2gmashv.eastus-01.azurewebsites.net'; // URL do backend
 
     function checkLoginStatus() {
         const username = localStorage.getItem('username');
@@ -74,14 +74,37 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Erro ao postar dados:', error));
     }
 
+    function authenticateUser(username, password) {
+        return fetch(`${baseUrl}/users`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na resposta da rede: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(users => {
+                const user = users.find(user => user.username === username && user.password === password);
+                return user !== undefined;
+            })
+            .catch(error => {
+                console.error('Erro ao autenticar usuário:', error);
+                return false;
+            });
+    }
+
     if (loginButton && logoutButton) {
-        loginButton.addEventListener('click', function() {
+        loginButton.addEventListener('click', async function() {
             const username = usernameInput.value;
             const password = passwordInput.value;
 
             if (username && password) {
-                localStorage.setItem('username', username);
-                checkLoginStatus();
+                const isAuthenticated = await authenticateUser(username, password);
+                if (isAuthenticated) {
+                    localStorage.setItem('username', username);
+                    checkLoginStatus();
+                } else {
+                    alert('Usuário ou senha não encontrados.');
+                }
             } else {
                 alert('Por favor, preencha todos os campos.');
             }
