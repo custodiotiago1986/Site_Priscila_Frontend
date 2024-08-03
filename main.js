@@ -74,14 +74,36 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Erro ao postar dados:', error));
     }
 
+    function validateUser(username, password) {
+        return fetch(`${baseUrl}/users`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na resposta da rede: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(users => {
+                const user = users.find(user => user.username === username && user.password === password);
+                return user;
+            })
+            .catch(error => console.error('Erro ao validar usuário:', error));
+    }
+
     if (loginButton && logoutButton) {
         loginButton.addEventListener('click', function() {
             const username = usernameInput.value;
             const password = passwordInput.value;
 
             if (username && password) {
-                localStorage.setItem('username', username);
-                checkLoginStatus();
+                validateUser(username, password)
+                    .then(user => {
+                        if (user) {
+                            localStorage.setItem('username', username);
+                            checkLoginStatus();
+                        } else {
+                            alert('Usuário não encontrado.');
+                        }
+                    });
             } else {
                 alert('Por favor, preencha todos os campos.');
             }
