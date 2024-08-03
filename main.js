@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const postForm = document.getElementById('postForm');
     const welcomeMessage = document.getElementById('welcomeMessage');
     const welcomeUsername = document.getElementById('welcomeUsername');
-    const baseUrl = 'http://localhost:3000'; // URL do backend
+    const baseUrl = 'sitepriscilabackend-bcengybre2gmashv.eastus-01.azurewebsites.net'; // URL do backend
 
     function checkLoginStatus() {
         const username = localStorage.getItem('username');
