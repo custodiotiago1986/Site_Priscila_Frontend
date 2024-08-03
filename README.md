@@ -6,3 +6,4 @@ Um site em que a administradora vai entrar com seu login e senha e postar seus c
 - aulas dadas e por vir
 - scripts de R
 - parte de contato para envio automático de e-mail
+- envio de requisições HTTP para o Back em Node.js  
