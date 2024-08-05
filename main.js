@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const postForm = document.getElementById('postForm');
     const welcomeMessage = document.getElementById('welcomeMessage');
     const welcomeUsername = document.getElementById('welcomeUsername');
-    const baseUrl = 'sitepriscilabackend-bcengybre2gmashv.brazilsouth-01.azurewebsites.net'; // URL do backend
+    const baseUrl = 'const baseUrl = 'https://sitepriscilabackend-bcengybre2gmashv.brazilsouth-01.azurewebsites.net'; // URL do backend'; // URL do backend
 
     function checkLoginStatus() {
         const username = localStorage.getItem('username');
