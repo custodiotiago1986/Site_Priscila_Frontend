@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const postForm = document.getElementById('postForm');
     const welcomeMessage = document.getElementById('welcomeMessage');
     const welcomeUsername = document.getElementById('welcomeUsername');
-    const baseUrl = 'const baseUrl = 'https://sitepriscilabackend-bcengybre2gmashv.brazilsouth-01.azurewebsites.net'; // URL do backend'; // URL do backend
+    const baseUrl = 'https://sitepriscilabackend-bcengybre2gmashv.brazilsouth-01.azurewebsites.net'; // URL do backend
 
     function checkLoginStatus() {
         const username = localStorage.getItem('username');
@@ -99,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(users => {
                 console.log('Usuários recebidos:', users); // Log dos dados de usuários recebidos
                 const user = users.find(user => user.username === username && user.password === password);
+                console.log('Usuário encontrado:', user); // Log do usuário encontrado
                 return user !== undefined;
             })
             .catch(error => {
