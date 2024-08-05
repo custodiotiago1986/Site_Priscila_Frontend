@@ -9,10 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const postForm = document.getElementById('postForm');
     const welcomeMessage = document.getElementById('welcomeMessage');
     const welcomeUsername = document.getElementById('welcomeUsername');
-    const baseUrl = 'http://localhost:3000'; // URL do backend
+    const baseUrl = 'https://sitepriscilabackend-bcengybre2gmashv.brazilsouth-01.azurewebsites.net'; // URL do backend
 
     function checkLoginStatus() {
         const username = localStorage.getItem('username');
+        console.log('Status do login - usuário:', username); // Log do usuário autenticado
+
         if (username) {
             loginButton.style.display = 'none';
             usernameInput.style.display = 'none';
@@ -33,16 +35,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadPosts() {
         const endpoint = postAulaForm ? `${baseUrl}/aulas` : (postScriptForm ? `${baseUrl}/scripts` : null);
+        console.log('Endpoint de carregamento de posts:', endpoint); // Log do endpoint
+
         if (!endpoint) return;
 
         fetch(endpoint)
             .then(response => {
+                console.log('Resposta da rede ao carregar posts:', response); // Log da resposta da rede
                 if (!response.ok) {
                     throw new Error('Erro na resposta da rede: ' + response.statusText);
                 }
                 return response.json();
             })
             .then(data => {
+                console.log('Posts recebidos:', data); // Log dos dados de posts recebidos
                 postsContainer.innerHTML = data.map(post => `
                     <div class="post mb-3">
                         <h4>${post.title}</h4>
@@ -55,6 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function postData(url, data) {
+        console.log('Enviando dados para:', url); // Log do URL de envio
+        console.log('Dados enviados:', data); // Log dos dados enviados
+
         fetch(url, {
             method: 'POST',
             headers: {
@@ -63,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify(data)
         })
         .then(response => {
+            console.log('Resposta da rede ao postar dados:', response); // Log da resposta da rede
             if (!response.ok) {
                 throw new Error('Erro na resposta da rede: ' + response.statusText);
             }
@@ -74,36 +84,46 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Erro ao postar dados:', error));
     }
 
-    function validateUser(username, password) {
-        return fetch(`${baseUrl}/users`)
+    function authenticateUser(username, password) {
+        const url = `${baseUrl}/users`;
+        console.log('Chamando endpoint de autenticação:', url); // Log da URL chamada
+
+        return fetch(url)
             .then(response => {
+                console.log('Resposta do servidor:', response); // Log da resposta do servidor
                 if (!response.ok) {
                     throw new Error('Erro na resposta da rede: ' + response.statusText);
                 }
                 return response.json();
             })
             .then(users => {
+                console.log('Usuários recebidos:', users); // Log dos dados de usuários recebidos
                 const user = users.find(user => user.username === username && user.password === password);
-                return user;
+                console.log('Usuário encontrado:', user); // Log do usuário encontrado
+                return user !== undefined;
             })
-            .catch(error => console.error('Erro ao validar usuário:', error));
+            .catch(error => {
+                console.error('Erro ao autenticar usuário:', error);
+                return false;
+            });
     }
 
     if (loginButton && logoutButton) {
-        loginButton.addEventListener('click', function() {
+        loginButton.addEventListener('click', async function() {
             const username = usernameInput.value;
             const password = passwordInput.value;
 
+            console.log('Tentando autenticar usuário:', username); // Log do nome de usuário
+            console.log('Senha fornecida:', password); // Log da senha (não recomendado em produção)
+
             if (username && password) {
-                validateUser(username, password)
-                    .then(user => {
-                        if (user) {
-                            localStorage.setItem('username', username);
-                            checkLoginStatus();
-                        } else {
-                            alert('Usuário não encontrado.');
-                        }
-                    });
+                const isAuthenticated = await authenticateUser(username, password);
+                if (isAuthenticated) {
+                    localStorage.setItem('username', username);
+                    checkLoginStatus();
+                } else {
+                    alert('Usuário ou senha não encontrados.');
+                }
             } else {
                 alert('Por favor, preencha todos os campos.');
             }
