@@ -7,3 +7,6 @@ Um site em que a administradora vai entrar com seu login e senha e postar seus c
 - scripts de R
 - parte de contato para envio automático de e-mail
 - envio de requisições HTTP para o Back em Node.js  
+
+## Como acessar
+https://profpriscila.netlify.app/
