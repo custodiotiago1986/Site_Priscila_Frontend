@@ -9,12 +9,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const postForm = document.getElementById('postForm');
     const welcomeMessage = document.getElementById('welcomeMessage');
     const welcomeUsername = document.getElementById('welcomeUsername');
-    const baseUrl = 'https://sitepriscilabackend-bcengybre2gmashv.brazilsouth-01.azurewebsites.net'; // URL do backend
+    const baseUrl = 'http://localhost:3000'; // URL do backend
 
     function checkLoginStatus() {
         const username = localStorage.getItem('username');
-        console.log('Status do login - usuário:', username); // Log do usuário autenticado
-
         if (username) {
             loginButton.style.display = 'none';
             usernameInput.style.display = 'none';
@@ -35,25 +33,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadPosts() {
         const endpoint = postAulaForm ? `${baseUrl}/aulas` : (postScriptForm ? `${baseUrl}/scripts` : null);
-        console.log('Endpoint de carregamento de posts:', endpoint); // Log do endpoint
-
         if (!endpoint) return;
 
         fetch(endpoint)
             .then(response => {
-                console.log('Resposta da rede ao carregar posts:', response); // Log da resposta da rede
                 if (!response.ok) {
                     throw new Error('Erro na resposta da rede: ' + response.statusText);
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('Posts recebidos:', data); // Log dos dados de posts recebidos
                 postsContainer.innerHTML = data.map(post => `
                     <div class="post mb-3">
-                        <h4>${post.titulo}</h4>
-                        <p>${post.descricao}</p>
-                        <p><small>Postado por ${post.autor}, ${new Date(post.data).toLocaleDateString()} às ${new Date(post.hora).toLocaleTimeString()}</small></p>
+                        <h4>${post.title}</h4>
+                        <p>${post.description}</p>
+                        <p><small>Postado por ${post.created_by}, ${new Date(post.date).toLocaleDateString()} às ${post.time}</small></p>
                     </div>
                 `).join('');
             })
@@ -61,9 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function postData(url, data) {
-        console.log('Enviando dados para:', url); // Log do URL de envio
-        console.log('Dados enviados:', data); // Log dos dados enviados
-
         fetch(url, {
             method: 'POST',
             headers: {
@@ -72,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify(data)
         })
         .then(response => {
-            console.log('Resposta da rede ao postar dados:', response); // Log da resposta da rede
             if (!response.ok) {
                 throw new Error('Erro na resposta da rede: ' + response.statusText);
             }
@@ -84,46 +74,36 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Erro ao postar dados:', error));
     }
 
-    function authenticateUser(username, password) {
-        const url = `${baseUrl}/users`;
-        console.log('Chamando endpoint de autenticação:', url); // Log da URL chamada
-
-        return fetch(url)
+    function validateUser(username, password) {
+        return fetch(`${baseUrl}/users`)
             .then(response => {
-                console.log('Resposta do servidor:', response); // Log da resposta do servidor
                 if (!response.ok) {
                     throw new Error('Erro na resposta da rede: ' + response.statusText);
                 }
                 return response.json();
             })
             .then(users => {
-                console.log('Usuários recebidos:', users); // Log dos dados de usuários recebidos
                 const user = users.find(user => user.username === username && user.password === password);
-                console.log('Usuário encontrado:', user); // Log do usuário encontrado
-                return user !== undefined;
+                return user;
             })
-            .catch(error => {
-                console.error('Erro ao autenticar usuário:', error);
-                return false;
-            });
+            .catch(error => console.error('Erro ao validar usuário:', error));
     }
 
     if (loginButton && logoutButton) {
-        loginButton.addEventListener('click', async function() {
+        loginButton.addEventListener('click', function() {
             const username = usernameInput.value;
             const password = passwordInput.value;
 
-            console.log('Tentando autenticar usuário:', username); // Log do nome de usuário
-            console.log('Senha fornecida:', password); // Log da senha (não recomendado em produção)
-
             if (username && password) {
-                const isAuthenticated = await authenticateUser(username, password);
-                if (isAuthenticated) {
-                    localStorage.setItem('username', username);
-                    checkLoginStatus();
-                } else {
-                    alert('Usuário ou senha não encontrados.');
-                }
+                validateUser(username, password)
+                    .then(user => {
+                        if (user) {
+                            localStorage.setItem('username', username);
+                            checkLoginStatus();
+                        } else {
+                            alert('Usuário não encontrado.');
+                        }
+                    });
             } else {
                 alert('Por favor, preencha todos os campos.');
             }
@@ -139,17 +119,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const postButton = document.getElementById('postButton');
         if (postButton) {
             postButton.addEventListener('click', function() {
-                const titulo = document.getElementById('titulo').value;
-                const descricao = document.getElementById('conteudo').value;
+                const title = document.getElementById('titulo').value;
+                const description = document.getElementById('conteudo').value;
                 const username = localStorage.getItem('username');
 
-                if (titulo && descricao) {
+                if (title && description) {
                     postData(`${baseUrl}/aulas`, {
-                        titulo: titulo,
-                        descricao: descricao,
-                        autor: username,
-                        data: new Date().toISOString().split('T')[0], // Data no formato YYYY-MM-DD
-                        hora: new Date().toLocaleTimeString() // Hora no formato de string
+                        title: title,
+                        description: description,
+                        created_by: username,
+                        date: new Date().toISOString().split('T')[0], // Data no formato YYYY-MM-DD
+                        time: new Date().toLocaleTimeString() // Hora no formato de string
                     });
                 } else {
                     alert('Por favor, preencha todos os campos obrigatórios.');
@@ -162,17 +142,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const postButton = document.getElementById('postButton');
         if (postButton) {
             postButton.addEventListener('click', function() {
-                const titulo = document.getElementById('titulo').value;
-                const descricao = document.getElementById('conteudo').value;
+                const title = document.getElementById('titulo').value;
+                const description = document.getElementById('conteudo').value;
                 const username = localStorage.getItem('username');
 
-                if (titulo && descricao) {
+                if (title && description) {
                     postData(`${baseUrl}/scripts`, {
-                        titulo: titulo,
-                        descricao: descricao,
-                        autor: username,
-                        data: new Date().toISOString().split('T')[0], // Data no formato YYYY-MM-DD
-                        hora: new Date().toLocaleTimeString() // Hora no formato de string
+                        title: title,
+                        description: description,
+                        created_by: username,
+                        date: new Date().toISOString().split('T')[0], // Data no formato YYYY-MM-DD
+                        time: new Date().toLocaleTimeString() // Hora no formato de string
                     });
                 } else {
                     alert('Por favor, preencha todos os campos obrigatórios.');
