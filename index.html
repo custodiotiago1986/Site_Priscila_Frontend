@@ -9,16 +9,19 @@
 </head>
 <body>
     <nav class="navbar navbar-light bg-light">
-        <div class="container">
-            <div class="nav-links text-center mb-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- Links de navegação -->
+            <div class="nav-links d-flex align-items-center">
                 <a href="index.html" class="btn btn-outline-primary mx-2">Início</a>
                 <a href="aulas.html" class="btn btn-outline-primary mx-2">Aulas</a>
                 <a href="scripts.html" class="btn btn-outline-primary mx-2">Scripts</a>
                 <a href="contato.html" class="btn btn-outline-primary mx-2">Contato</a>
             </div>
+    
+            <!-- Formulário de login e logout -->
             <div class="d-flex align-items-center">
                 <span id="welcomeMessage" class="ml-3" style="display: none;">Olá, <span id="welcomeUsername"></span></span>
-                <form class="form-inline">
+                <form class="form-inline mb-0">
                     <input id="username" class="form-control mr-sm-2" type="text" placeholder="Usuário">
                     <input id="password" class="form-control mr-sm-2" type="password" placeholder="Senha">
                     <button id="loginButton" class="btn btn-outline-success my-2 my-sm-0" type="button">Login</button>
@@ -27,6 +30,7 @@
             </div>
         </div>
     </nav>
+    
 
     <div class="container">
         <div class="row">
@@ -34,7 +38,10 @@
                 <img src="profile.png" alt="Profile Image" class="profile-img">
             </div>
             <div class="col-md-6 d-flex align-items-center">
-                <p class="text-introduction">Olá! Bem-vindo ao meu site. Aqui você encontrará informações sobre meus projetos e experiências. Explore as seções para saber mais.</p>
+                <p class="text-introduction">Olá! Meu nome é Priscila. Sou professora na UFPR Toledo e estou finalizando meu pós-doutorado em Entomologia na UFPR, focada na evolução das abelhas noturnas usando morfometria geométrica.
+
+                    Tenho experiência em análise de dados biológicos, ecológicos e médicos, utilizando R, Python e SQL. Trabalho como freelance em pesquisas acadêmicas e já coordenei um grupo de Bioestatística na USP. Com quatro artigos publicados e três em andamento, tenho certificação B1 pelo TOEFL ITP e estou me aprofundando em análise de dados.
+                    </p>
             </div>
         </div>
     </div>
