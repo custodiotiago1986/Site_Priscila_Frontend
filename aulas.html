@@ -9,16 +9,19 @@
 </head>
 <body>
     <nav class="navbar navbar-light bg-light">
-        <div class="container">
-            <div class="nav-links text-center mb-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- Links de navegação -->
+            <div class="nav-links d-flex align-items-center">
                 <a href="index.html" class="btn btn-outline-primary mx-2">Início</a>
                 <a href="aulas.html" class="btn btn-outline-primary mx-2">Aulas</a>
                 <a href="scripts.html" class="btn btn-outline-primary mx-2">Scripts</a>
                 <a href="contato.html" class="btn btn-outline-primary mx-2">Contato</a>
             </div>
+    
+            <!-- Formulário de login e logout -->
             <div class="d-flex align-items-center">
                 <span id="welcomeMessage" class="ml-3" style="display: none;">Olá, <span id="welcomeUsername"></span></span>
-                <form class="form-inline">
+                <form class="form-inline mb-0">
                     <input id="username" class="form-control mr-sm-2" type="text" placeholder="Usuário">
                     <input id="password" class="form-control mr-sm-2" type="password" placeholder="Senha">
                     <button id="loginButton" class="btn btn-outline-success my-2 my-sm-0" type="button">Login</button>
@@ -54,9 +57,9 @@
     </div>
 
     <footer class="footer">
-        <p>&copy; 2024 Tiago Luis Custódio. Todos os direitos reservados.</p>
+        <p>&copy; 2024 <a href="https://devtiago.netlify.app/" target="_blank" rel="noopener noreferrer">Tiago Luis Custódio</a>. Todos os direitos reservados.</p>
         <button id="scrollToTop" class="btn btn-primary" style="display: none;">&uarr;</button>
-    </footer>
+    </footer>    
 
     <script src="main.js"></script>
 </body>
