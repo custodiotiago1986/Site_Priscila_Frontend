@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
             welcomeMessage.style.display = 'inline';
             welcomeUsername.textContent = username;
             postForm.style.display = 'block'; // Mostrar o formulário de postagem
+            loadPosts(true); // Carregar posts com a exclusão ativada
         } else {
             loginButton.style.display = 'inline-block';    
             usernameInput.style.display = 'inline-block';
@@ -30,10 +31,11 @@ document.addEventListener('DOMContentLoaded', function() {
             logoutButton.style.display = 'none';
             welcomeMessage.style.display = 'none';
             postForm.style.display = 'none'; // Ocultar o formulário de postagem            
+            loadPosts(false); // Carregar posts sem a exclusão
         }
     }
 
-    function loadPosts() {
+    function loadPosts(showDeleteButton) {
         const endpoint = postAulaForm ? `${baseUrl}/aulas` : (postScriptForm ? `${baseUrl}/scripts` : null);
         console.log('Endpoint de carregamento de posts:', endpoint); // Log do endpoint
 
@@ -55,18 +57,22 @@ document.addEventListener('DOMContentLoaded', function() {
                             <h4>${post.title}</h4>
                             <p>${post.description}</p>
                             <p><small>Postado por ${post.created_by}, ${new Date(post.date).toLocaleDateString()} às ${post.time}</small></p>
-                            <button class="deleteButton" data-id="${post._id}" style="position: absolute; top: 5px; right: 5px; width: 15px; height: 15px; background: url('delete-icon.png') no-repeat center center; background-size: contain; border: none; cursor: pointer;"></button>
+                            ${showDeleteButton ? `
+                                <button class="deleteButton" data-id="${post._id}" style="position: absolute; top: 5px; right: 5px; width: 15px; height: 15px; background: url('delete-icon.png') no-repeat center center; background-size: contain; border: none; cursor: pointer;"></button>
+                            ` : ''}
                         </div>
                     </div>
                 `).join('');
 
-                // Adicionar evento de clique aos botões de excluir
-                document.querySelectorAll('.deleteButton').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const postId = this.getAttribute('data-id');
-                        deletePost(postId);
+                // Adicionar evento de clique aos botões de excluir, se exibidos
+                if (showDeleteButton) {
+                    document.querySelectorAll('.deleteButton').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const postId = this.getAttribute('data-id');
+                            deletePost(postId);
+                        });
                     });
-                });
+                }
             })
             .catch(error => console.error('Erro ao carregar postagens:', error));
     }
@@ -90,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(() => {
-            loadPosts();
+            loadPosts(localStorage.getItem('username') !== null); // Recarregar posts com base no status de login
         })
         .catch(error => console.error('Erro ao postar dados:', error));
     }
@@ -109,8 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) {
                 throw new Error('Erro na resposta da rede: ' + response.statusText);
             }
-            // Não tentamos processar resposta como JSON aqui
-            loadPosts();
+            loadPosts(localStorage.getItem('username') !== null); // Recarregar posts com base no status de login
         })
         .catch(error => console.error('Erro ao excluir postagem:', error));
     }
@@ -214,7 +219,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para mostrar/ocultar o botão "scroll to top"
     window.addEventListener('scroll', function() {
-        const scrollToTopButton = document.getElementById('scrollToTop');
         if (scrollToTopButton) {
             if (window.scrollY > 300) {
                 scrollToTopButton.style.display = 'block';
@@ -236,6 +240,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Carregar posts ao carregar a página
-    loadPosts();
+    loadPosts(false); // Inicialmente sem excluir
     checkLoginStatus();
 });
