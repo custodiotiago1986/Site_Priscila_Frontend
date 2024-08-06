@@ -51,6 +51,10 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 console.log('Posts recebidos:', data); // Log dos dados de posts recebidos
+
+                // Inverter a ordem dos posts para que os mais novos fiquem no topo
+                data.reverse();
+
                 postsContainer.innerHTML = data.map(post => `
                     <div class="post mb-3" id="post-${post._id}">
                         <div style="position: relative;">
@@ -216,30 +220,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-
-    // Função para mostrar/ocultar o botão "scroll to top"
-    window.addEventListener('scroll', function() {
-        if (scrollToTopButton) {
-            if (window.scrollY > 300) {
-                scrollToTopButton.style.display = 'block';
-            } else {
-                scrollToTopButton.style.display = 'none';
-            }
-        }
-    });
-
-    // Função para rolar até o topo da página
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Adicionar o evento de clique no botão "scroll to top"
-    const scrollToTopButton = document.getElementById('scrollToTop');
-    if (scrollToTopButton) {
-        scrollToTopButton.addEventListener('click', scrollToTop);
-    }
-
-    // Carregar posts ao carregar a página
-    loadPosts(false); // Inicialmente sem excluir
+    loadPosts(false);   
     checkLoginStatus();
 });
