@@ -50,12 +50,23 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 console.log('Posts recebidos:', data); // Log dos dados de posts recebidos
                 postsContainer.innerHTML = data.map(post => `
-                    <div class="post mb-3">
-                        <h4>${post.title}</h4>
-                        <p>${post.description}</p>
-                        <p><small>Postado por ${post.created_by}, ${new Date(post.date).toLocaleDateString()} às ${post.time}</small></p>
+                    <div class="post mb-3" id="post-${post._id}">
+                        <div style="position: relative;">
+                            <h4>${post.title}</h4>
+                            <p>${post.description}</p>
+                            <p><small>Postado por ${post.created_by}, ${new Date(post.date).toLocaleDateString()} às ${post.time}</small></p>
+                            <button class="deleteButton" data-id="${post._id}" style="position: absolute; top: 5px; right: 5px; width: 15px; height: 15px; background: url('delete-icon.png') no-repeat center center; background-size: contain; border: none; cursor: pointer;"></button>
+                        </div>
                     </div>
                 `).join('');
+
+                // Adicionar evento de clique aos botões de excluir
+                document.querySelectorAll('.deleteButton').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const postId = this.getAttribute('data-id');
+                        deletePost(postId);
+                    });
+                });
             })
             .catch(error => console.error('Erro ao carregar postagens:', error));
     }
@@ -82,6 +93,26 @@ document.addEventListener('DOMContentLoaded', function() {
             loadPosts();
         })
         .catch(error => console.error('Erro ao postar dados:', error));
+    }
+
+    function deletePost(postId) {
+        const endpoint = postAulaForm ? `${baseUrl}/aulas/${postId}` : (postScriptForm ? `${baseUrl}/scripts/${postId}` : null);
+        console.log('Endpoint de exclusão de post:', endpoint); // Log do endpoint de exclusão
+
+        if (!endpoint) return;
+
+        fetch(endpoint, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            console.log('Resposta da rede ao excluir post:', response); // Log da resposta da rede
+            if (!response.ok) {
+                throw new Error('Erro na resposta da rede: ' + response.statusText);
+            }
+            // Não tentamos processar resposta como JSON aqui
+            loadPosts();
+        })
+        .catch(error => console.error('Erro ao excluir postagem:', error));
     }
 
     function authenticateUser(username, password) {
@@ -184,19 +215,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função para mostrar/ocultar o botão "scroll to top"
     window.addEventListener('scroll', function() {
         const scrollToTopButton = document.getElementById('scrollToTop');
-        if (window.scrollY > 100) {
-            scrollToTopButton.style.display = 'block';
-        } else {
-            scrollToTopButton.style.display = 'none';
+        if (scrollToTopButton) {
+            if (window.scrollY > 300) {
+                scrollToTopButton.style.display = 'block';
+            } else {
+                scrollToTopButton.style.display = 'none';
+            }
         }
     });
 
-    // Função para rolar para o topo da página
+    // Função para rolar até o topo da página
     function scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Adiciona o evento de clique no botão "scroll to top"
+    // Adicionar o evento de clique no botão "scroll to top"
     const scrollToTopButton = document.getElementById('scrollToTop');
     if (scrollToTopButton) {
         scrollToTopButton.addEventListener('click', scrollToTop);
