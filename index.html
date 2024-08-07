@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Início</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container">
+            <div class="nav-links text-center mb-4">
+                <a href="index.html" class="btn btn-outline-primary mx-2">Início</a>
+                <a href="aulas.html" class="btn btn-outline-primary mx-2">Aulas</a>
+                <a href="scripts.html" class="btn btn-outline-primary mx-2">Scripts</a>
+                <a href="contato.html" class="btn btn-outline-primary mx-2">Contato</a>
+            </div>
+            <div class="d-flex align-items-center">
+                <span id="welcomeMessage" class="ml-3" style="display: none;">Olá, <span id="welcomeUsername"></span></span>
+                <form class="form-inline">
+                    <input id="username" class="form-control mr-sm-2" type="text" placeholder="Usuário">
+                    <input id="password" class="form-control mr-sm-2" type="password" placeholder="Senha">
+                    <button id="loginButton" class="btn btn-outline-success my-2 my-sm-0" type="button">Login</button>
+                    <button id="logoutButton" class="btn btn-outline-danger my-2 my-sm-0" type="button" style="display: none;">Logout</button>
+                </form>                
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <img src="profile.png" alt="Profile Image" class="profile-img">
+            </div>
+            <div class="col-md-6 d-flex align-items-center">
+                <p class="text-introduction">Olá! Bem-vindo ao meu site. Aqui você encontrará informações sobre meus projetos e experiências. Explore as seções para saber mais.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2024 Tiago Luis Custódio. Todos os direitos reservados.</p>
+        </div>
+    </footer>   
+
+    <script src="main.js"></script>
+</body>
+</html>

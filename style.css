@@ -1,0 +1,97 @@
+body {
+    padding-top: 70px; /* Ajusta o espaço para o navbar fixo */
+    font-family: Arial, sans-serif; /* Define uma fonte padrão */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Garante que o body tenha pelo menos a altura da viewport */
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    background-color: #ffffff; /* Cor de fundo da navbar */
+    border-bottom: 1px solid #ddd; /* Adiciona uma borda sutil */
+    padding: 0.5rem 1rem; /* Adiciona algum padding para a navbar */
+}
+
+.container {
+    margin-top: 20px; /* Adiciona margem superior ao conteúdo */
+}
+
+.profile-img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: 50px;
+}
+
+.text-introduction {
+    font-size: 1.25rem;
+    margin-top: 50px;
+}
+
+.posts-list {
+    margin-top: 20px;
+}
+
+.post {
+    background-color: #ffffff; /* Cor de fundo das postagens */
+    border: 1px solid #ddd; /* Borda ao redor das postagens */
+    border-radius: 5px; /* Cantos arredondados */
+    padding: 15px; /* Espaçamento interno */
+    margin-bottom: 20px; /* Espaçamento entre postagens */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.post h4 {
+    margin-top: 0; /* Remove a margem superior dos títulos */
+    color: #007bff; /* Cor do título */
+}
+
+.post p {
+    color: #333; /* Cor do texto das postagens */
+}
+
+.post small {
+    color: #6c757d; /* Cor do texto pequeno */
+}
+
+.footer {
+    background-color: #f8f9fa;
+    padding: 10px 0;
+    text-align: center; /* Alinha o texto ao centro */
+    border-top: 1px solid #ddd; /* Borda superior */
+    margin-top: auto; /* Empurra o footer para o final do conteúdo */
+}
+
+#scrollToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    background-color: #007bff; /* Cor de fundo do botão */
+    color: #fff; /* Cor do texto */
+    border: none;
+    border-radius: 50%; /* Bordas arredondadas */
+    width: 40px; /* Largura do botão */
+    height: 40px; /* Altura do botão */
+    font-size: 18px; /* Tamanho da fonte */
+    cursor: pointer; /* Cursor de ponteiro */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#scrollToTop:hover {
+    background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+}
+
+#welcomeMessage{
+    margin-right: 20px;
+}
